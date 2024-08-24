@@ -7,6 +7,7 @@ import { useState } from "react";
 function App() {
   const [btcPrice, setBtcPrice] = useState("000");
   const [ethPrice, setEthPrice] = useState("000");
+  const [goldPrice, setgoldPrice] = useState("000");
 
   // Initialize RPC/injected provider
   const web3 = new Web3(window.ethereum);
@@ -34,6 +35,15 @@ function App() {
     setEthPrice(formattedPrice);
   }
 
+async function getgoldPrice(){
+   const goldPrice = await web3.chainlink.getPrice(MainnetPriceFeeds.XauUsd);
+  const formattedGoldPrice = goldPrice.answer.toString().substring(0, 5);
+  //updating front end
+  setgoldPrice(formattedGoldPrice);
+  
+}
+ 
+  
   return (
     <div className="App">
       <header className="App-header">
@@ -43,6 +53,9 @@ function App() {
 
         <button onClick={getETHPrice}>Get ETH Price</button>
         <p>ETH price is: {ethPrice} </p>
+
+        <button onClick={getgoldPrice}>Get Gold Price</button>
+        <p>Gold price is: {goldPrice} </p>
       </header>
     </div>
   );
